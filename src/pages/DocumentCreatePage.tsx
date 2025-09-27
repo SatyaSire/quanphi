@@ -560,6 +560,7 @@ const DocumentCreatePage: React.FC = () => {
                 </div>
               </div>
             </div>
+            </div>
         );
         
       case 4:
@@ -761,8 +762,9 @@ const DocumentCreatePage: React.FC = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
+      <div className="flex-1">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <form onSubmit={handleSubmit} className="space-y-8">
           {renderStepContent()}
 
           {/* Navigation Buttons */}
@@ -818,9 +820,11 @@ const DocumentCreatePage: React.FC = () => {
                     )}
                   </button>
                 )}
-               </div>
-             </div>
-        </form>
+              </div>
+            </div>
+          </div>
+          </form>
+        </div>
       </div>
     </div>
   );

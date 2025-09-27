@@ -128,22 +128,29 @@ const DocumentEditPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
+        <div className="flex items-center space-x-3">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+          <span className="text-gray-700 font-medium">Loading document...</span>
+        </div>
       </div>
     );
   }
 
   if (!document) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-white mb-2">Document Not Found</h2>
-          <p className="text-white/60 mb-4">The document you're trying to edit doesn't exist.</p>
+          <div className="bg-gradient-to-br from-red-100 to-red-200 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+            <FileText className="w-12 h-12 text-red-500" />
+          </div>
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">Document Not Found</h2>
+          <p className="text-gray-600 mb-6">The document you're trying to edit doesn't exist.</p>
           <button
             onClick={() => navigate('/documents')}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
           >
+            <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Documents
           </button>
         </div>
@@ -152,19 +159,28 @@ const DocumentEditPage: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
       {/* Header */}
-      <div className="bg-white/10 backdrop-blur-md border-b border-white/20">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="sticky top-0 z-40 bg-white/80 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleCancel}
-                className="flex items-center space-x-2 text-white/70 hover:text-white transition-colors"
+                className="flex items-center space-x-2 text-gray-600 hover:text-gray-900 transition-colors font-medium"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span>Back to Document</span>
               </button>
+            </div>
+            <div className="flex items-center space-x-3">
+              <div className="p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg">
+                <FileText className="w-5 h-5 text-white" />
+              </div>
+              <div>
+                <h1 className="text-lg font-bold text-gray-900">Edit Document</h1>
+                <p className="text-sm text-gray-600">Update document information</p>
+              </div>
             </div>
           </div>
         </div>
@@ -172,121 +188,126 @@ const DocumentEditPage: React.FC = () => {
 
       {/* Main Content */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Page Header */}
-        <div className="mb-8">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="p-2 bg-blue-500/20 rounded-lg">
-              <FileText className="w-6 h-6 text-blue-400" />
-            </div>
-            <div>
-              <h1 className="text-2xl font-bold text-white">Edit Document</h1>
-              <p className="text-white/60">Update document information and metadata</p>
-            </div>
-          </div>
-        </div>
-
         <form onSubmit={handleSubmit} className="space-y-8">
           {/* Current File Info */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-            <h2 className="text-lg font-semibold text-white mb-4 flex items-center space-x-2">
-              <Eye className="w-5 h-5" />
-              <span>Current File</span>
-            </h2>
-            
-            <div className="flex items-center justify-between p-4 bg-white/5 rounded-lg border border-white/10">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+            <div className="bg-gradient-to-r from-blue-500/10 to-indigo-500/10 px-6 py-4 border-b border-gray-100">
               <div className="flex items-center space-x-3">
-                <div className="w-10 h-10 bg-blue-500/20 rounded flex items-center justify-center">
-                  <FileText className="w-5 h-5 text-blue-400" />
+                <div className="p-2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-lg">
+                  <Eye className="h-5 w-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-white font-medium">{document.fileName}</p>
-                  <p className="text-white/60 text-sm">
-                    {formatFileSize(document.fileSize)} • Uploaded {new Date(document.uploadedAt).toLocaleDateString()}
-                  </p>
+                  <h2 className="text-xl font-bold text-gray-900">Current File</h2>
+                  <p className="text-sm text-gray-600">Manage the current document file</p>
                 </div>
               </div>
-              
-              <button
-                type="button"
-                onClick={() => setShowReplaceFile(!showReplaceFile)}
-                className="px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg transition-colors flex items-center space-x-2"
-              >
-                <Upload className="w-4 h-4" />
-                <span>Replace File</span>
-              </button>
             </div>
             
-            {/* File Replacement */}
-            {showReplaceFile && (
-              <div className="mt-4 p-4 bg-orange-500/10 border border-orange-500/20 rounded-lg">
-                <h3 className="text-white font-medium mb-3">Replace with new file</h3>
-                <div className="space-y-3">
-                  <input
-                    type="file"
-                    accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png"
-                    onChange={handleFileReplace}
-                    className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700"
-                  />
-                  
-                  {replacementFile && (
-                    <div className="flex items-center justify-between p-3 bg-white/5 rounded-lg">
-                      <div>
-                        <p className="text-white font-medium">{replacementFile.name}</p>
-                        <p className="text-white/60 text-sm">{formatFileSize(replacementFile.size)}</p>
-                      </div>
-                      <button
-                        type="button"
-                        onClick={() => setReplacementFile(null)}
-                        className="text-red-400 hover:text-red-300 transition-colors"
-                      >
-                        <X className="w-4 h-4" />
-                      </button>
-                    </div>
-                  )}
-                  
-                  <div>
-                    <label className="block text-white/80 text-sm font-medium mb-2">
-                      Version Notes
-                    </label>
-                    <input
-                      type="text"
-                      value={versionNotes}
-                      onChange={(e) => setVersionNotes(e.target.value)}
-                      className="w-full px-3 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                      placeholder="Describe what changed in this version"
-                    />
+            <div className="p-6">
+              <div className="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-200">
+                <div className="flex items-center space-x-3">
+                  <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-xl flex items-center justify-center">
+                    <FileText className="w-6 h-6 text-white" />
                   </div>
-                  
-                  <p className="text-orange-300 text-sm">
-                    ⚠️ Replacing the file will create a new version. The old version will be preserved in version history.
-                  </p>
+                  <div>
+                    <p className="text-gray-900 font-semibold">{document.fileName}</p>
+                    <p className="text-gray-600 text-sm">
+                      {formatFileSize(document.fileSize)} • Uploaded {new Date(document.uploadedAt).toLocaleDateString()}
+                    </p>
+                  </div>
                 </div>
+                
+                <button
+                  type="button"
+                  onClick={() => setShowReplaceFile(!showReplaceFile)}
+                  className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-orange-600 to-red-600 text-white font-medium rounded-xl hover:from-orange-700 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl transform hover:scale-105"
+                >
+                  <Upload className="w-4 h-4 mr-2" />
+                  <span>Replace File</span>
+                </button>
               </div>
-            )}
+            
+              {/* File Replacement */}
+              {showReplaceFile && (
+                <div className="mt-4 p-4 bg-orange-50 border border-orange-200 rounded-xl">
+                  <h3 className="text-gray-900 font-semibold mb-3">Replace with new file</h3>
+                  <div className="space-y-3">
+                    <input
+                      type="file"
+                      accept=".pdf,.docx,.xlsx,.jpg,.jpeg,.png"
+                      onChange={handleFileReplace}
+                      className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:bg-blue-600 file:text-white hover:file:bg-blue-700 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                    />
+                    
+                    {replacementFile && (
+                      <div className="flex items-center justify-between p-3 bg-white rounded-lg border border-gray-200">
+                        <div>
+                          <p className="text-gray-900 font-medium">{replacementFile.name}</p>
+                          <p className="text-gray-600 text-sm">{formatFileSize(replacementFile.size)}</p>
+                        </div>
+                        <button
+                          type="button"
+                          onClick={() => setReplacementFile(null)}
+                          className="text-red-500 hover:text-red-700 transition-colors"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
+                    )}
+                    
+                    <div>
+                      <label className="block text-gray-700 text-sm font-medium mb-2">
+                        Version Notes
+                      </label>
+                      <input
+                        type="text"
+                        value={versionNotes}
+                        onChange={(e) => setVersionNotes(e.target.value)}
+                        className="w-full px-3 py-2 bg-white border border-gray-300 rounded-lg text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                        placeholder="Describe what changed in this version"
+                      />
+                    </div>
+                    
+                    <p className="text-orange-700 text-sm bg-orange-100 p-3 rounded-lg">
+                      ⚠️ Replacing the file will create a new version. The old version will be preserved in version history.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Document Information */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-            <h2 className="text-lg font-semibold text-white mb-6 flex items-center space-x-2">
-              <FileText className="w-5 h-5" />
-              <span>Document Information</span>
-            </h2>
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 overflow-hidden">
+            <div className="bg-gradient-to-r from-green-500/10 to-emerald-500/10 px-6 py-4 border-b border-gray-100">
+              <div className="flex items-center space-x-3">
+                <div className="p-2 bg-gradient-to-r from-green-500 to-emerald-500 rounded-lg">
+                  <FileText className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900">Document Information</h2>
+                  <p className="text-sm text-gray-600">Update document details and metadata</p>
+                </div>
+              </div>
+            </div>
+            
+            <div className="p-6">
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {/* Title */}
               <div className="md:col-span-2">
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Document Title *
                 </label>
                 <input
                   type="text"
                   value={formData.title}
                   onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                   placeholder="Enter document title"
                 />
                 {errors.title && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center space-x-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
                     <AlertCircle className="w-4 h-4" />
                     <span>{errors.title}</span>
                   </p>
@@ -295,23 +316,23 @@ const DocumentEditPage: React.FC = () => {
 
               {/* Category */}
               <div>
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Category *
                 </label>
                 <select
                   value={formData.category}
                   onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value as DocumentCategory }))}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 >
                   <option value="">Select category</option>
                   {documentCategories.map((category) => (
-                    <option key={category.id} value={category.id} className="bg-slate-800">
+                    <option key={category.id} value={category.id} className="bg-white">
                       {category.name}
                     </option>
                   ))}
                 </select>
                 {errors.category && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center space-x-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
                     <AlertCircle className="w-4 h-4" />
                     <span>{errors.category}</span>
                   </p>
@@ -320,33 +341,33 @@ const DocumentEditPage: React.FC = () => {
 
               {/* Type */}
               <div>
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Document Type *
                 </label>
                 <select
                   value={formData.type}
                   onChange={(e) => setFormData(prev => ({ ...prev, type: e.target.value as DocumentType }))}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 >
                   <option value="">Select type</option>
-                  <option value="aadhaar" className="bg-slate-800">Aadhaar Card</option>
-                  <option value="pan" className="bg-slate-800">PAN Card</option>
-                  <option value="passport" className="bg-slate-800">Passport</option>
-                  <option value="bank_proof" className="bg-slate-800">Bank Proof</option>
-                  <option value="certificate" className="bg-slate-800">Certificate</option>
-                  <option value="contract" className="bg-slate-800">Contract</option>
-                  <option value="blueprint" className="bg-slate-800">Blueprint</option>
-                  <option value="permit" className="bg-slate-800">Permit</option>
-                  <option value="invoice" className="bg-slate-800">Invoice</option>
-                  <option value="bill" className="bg-slate-800">Bill</option>
-                  <option value="salary_slip" className="bg-slate-800">Salary Slip</option>
-                  <option value="compliance" className="bg-slate-800">Compliance Certificate</option>
-                  <option value="gst" className="bg-slate-800">GST Registration</option>
-                  <option value="agreement" className="bg-slate-800">Agreement</option>
-                  <option value="other" className="bg-slate-800">Other</option>
+                  <option value="aadhaar" className="bg-white">Aadhaar Card</option>
+                  <option value="pan" className="bg-white">PAN Card</option>
+                  <option value="passport" className="bg-white">Passport</option>
+                  <option value="bank_proof" className="bg-white">Bank Proof</option>
+                  <option value="certificate" className="bg-white">Certificate</option>
+                  <option value="contract" className="bg-white">Contract</option>
+                  <option value="blueprint" className="bg-white">Blueprint</option>
+                  <option value="permit" className="bg-white">Permit</option>
+                  <option value="invoice" className="bg-white">Invoice</option>
+                  <option value="bill" className="bg-white">Bill</option>
+                  <option value="salary_slip" className="bg-white">Salary Slip</option>
+                  <option value="compliance" className="bg-white">Compliance Certificate</option>
+                  <option value="gst" className="bg-white">GST Registration</option>
+                  <option value="agreement" className="bg-white">Agreement</option>
+                  <option value="other" className="bg-white">Other</option>
                 </select>
                 {errors.type && (
-                  <p className="text-red-400 text-sm mt-1 flex items-center space-x-1">
+                  <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
                     <AlertCircle className="w-4 h-4" />
                     <span>{errors.type}</span>
                   </p>
@@ -355,13 +376,13 @@ const DocumentEditPage: React.FC = () => {
 
               {/* Linked Entity Type */}
               <div>
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Related To
                 </label>
                 <select
                   value={formData.linkedEntityType}
                   onChange={(e) => setFormData(prev => ({ ...prev, linkedEntityType: e.target.value, linkedEntityName: '' }))}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 >
                   <option value="">Select entity type</option>
                   <option value="worker">Worker</option>
@@ -373,7 +394,7 @@ const DocumentEditPage: React.FC = () => {
               {/* Linked Entity Name */}
               {formData.linkedEntityType && (
                 <div>
-                  <label className="block text-white/80 text-sm font-medium mb-2">
+                  <label className="block text-gray-700 text-sm font-medium mb-2">
                     {formData.linkedEntityType === 'worker' ? 'Worker Name' : 
                      formData.linkedEntityType === 'project' ? 'Project Name' : 'Client Name'}
                   </label>
@@ -381,7 +402,7 @@ const DocumentEditPage: React.FC = () => {
                     type="text"
                     value={formData.linkedEntityName}
                     onChange={(e) => setFormData(prev => ({ ...prev, linkedEntityName: e.target.value }))}
-                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder={`Enter ${formData.linkedEntityType} name`}
                   />
                 </div>
@@ -389,47 +410,47 @@ const DocumentEditPage: React.FC = () => {
 
               {/* Expiry Date */}
               <div>
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Expiry Date
                 </label>
                 <input
                   type="date"
                   value={formData.expiryDate}
                   onChange={(e) => setFormData(prev => ({ ...prev, expiryDate: e.target.value }))}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                 />
               </div>
 
               {/* Description */}
               <div className="md:col-span-2">
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Description
                 </label>
                 <textarea
                   value={formData.description}
                   onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                   rows={3}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
                   placeholder="Brief description of the document"
                 />
               </div>
 
               {/* Tags */}
               <div className="md:col-span-2">
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Tags
                 </label>
                 <div className="flex flex-wrap gap-2 mb-3">
                   {formData.tags.map((tag, index) => (
                     <span
                       key={index}
-                      className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-500/20 text-blue-300 rounded-full text-sm"
+                      className="inline-flex items-center space-x-1 px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm"
                     >
                       <span>{tag}</span>
                       <button
                         type="button"
                         onClick={() => removeTag(tag)}
-                        className="text-blue-300 hover:text-blue-200"
+                        className="text-blue-600 hover:text-blue-800"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -442,13 +463,13 @@ const DocumentEditPage: React.FC = () => {
                     value={newTag}
                     onChange={(e) => setNewTag(e.target.value)}
                     onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), addTag())}
-                    className="flex-1 px-4 py-2 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="flex-1 px-4 py-2 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                     placeholder="Add a tag"
                   />
                   <button
                     type="button"
                     onClick={addTag}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center space-x-1"
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-colors flex items-center space-x-1"
                   >
                     <Plus className="w-4 h-4" />
                     <span>Add</span>
@@ -458,14 +479,14 @@ const DocumentEditPage: React.FC = () => {
 
               {/* Notes */}
               <div className="md:col-span-2">
-                <label className="block text-white/80 text-sm font-medium mb-2">
+                <label className="block text-gray-700 text-sm font-medium mb-2">
                   Notes
                 </label>
                 <textarea
                   value={formData.notes}
                   onChange={(e) => setFormData(prev => ({ ...prev, notes: e.target.value }))}
                   rows={3}
-                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+                  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
                   placeholder="Additional notes or remarks"
                 />
               </div>
@@ -473,34 +494,36 @@ const DocumentEditPage: React.FC = () => {
           </div>
 
           {/* Security Settings */}
-          <div className="bg-white/10 backdrop-blur-md rounded-xl p-6 border border-white/20">
-            <h2 className="text-lg font-semibold text-white mb-6 flex items-center space-x-2">
-              <Lock className="w-5 h-5" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl border border-white/20 p-6">
+            <h2 className="text-lg font-semibold text-gray-800 mb-6 flex items-center space-x-2">
+              <div className="p-2 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg">
+                <Lock className="w-5 h-5 text-white" />
+              </div>
               <span>Security Settings</span>
             </h2>
             
             <div className="space-y-4">
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formData.isConfidential}
                   onChange={(e) => setFormData(prev => ({ ...prev, isConfidential: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500 focus:ring-2"
+                  className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
                 <div className="flex items-center space-x-2">
-                  {formData.isConfidential ? <Lock className="w-4 h-4 text-red-400" /> : <Unlock className="w-4 h-4 text-green-400" />}
-                  <span className="text-white">Mark as confidential</span>
+                  {formData.isConfidential ? <Lock className="w-4 h-4 text-red-600" /> : <Unlock className="w-4 h-4 text-green-600" />}
+                  <span className="text-gray-700">Mark as confidential</span>
                 </div>
               </label>
               
-              <label className="flex items-center space-x-3">
+              <label className="flex items-center space-x-3 cursor-pointer">
                 <input
                   type="checkbox"
                   checked={formData.allowDownload}
                   onChange={(e) => setFormData(prev => ({ ...prev, allowDownload: e.target.checked }))}
-                  className="w-4 h-4 text-blue-600 bg-white/10 border-white/20 rounded focus:ring-blue-500 focus:ring-2"
+                  className="w-4 h-4 text-blue-600 bg-white border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
                 />
-                <span className="text-white">Allow download</span>
+                <span className="text-gray-700">Allow download</span>
               </label>
             </div>
           </div>
@@ -510,14 +533,14 @@ const DocumentEditPage: React.FC = () => {
             <button
               type="button"
               onClick={handleCancel}
-              className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white rounded-lg transition-colors border border-white/20"
+              className="px-6 py-3 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-xl transition-colors border border-gray-300"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={saving}
-              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white rounded-lg transition-colors flex items-center space-x-2"
+              className="px-6 py-3 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-600/50 text-white rounded-xl transition-colors flex items-center space-x-2"
             >
               {saving ? (
                 <>
@@ -532,6 +555,7 @@ const DocumentEditPage: React.FC = () => {
               )}
             </button>
           </div>
+            </div>
         </form>
       </div>
     </div>

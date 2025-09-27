@@ -22,7 +22,8 @@ import {
   DollarSign,
   FileCheck
 } from 'lucide-react';
-import { Document, DocumentFilters, ViewMode } from '../types/documents';
+import { Document, DocumentFilter } from '../types/documents';
+import { ViewMode } from '../types/workers';
 import { documentsData, documentCategories, getDocumentsByCategory, getDocumentsByStatus } from '../data/documentsData';
 import DataTable from '../components/common/DataTable';
 
@@ -34,13 +35,12 @@ const DocumentsPage: React.FC = () => {
   const [selectedDocuments, setSelectedDocuments] = useState<string[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  const [filters, setFilters] = useState<DocumentFilters>({
+  const [filters, setFilters] = useState<DocumentFilter>({
     search: '',
     category: '',
-    type: '',
+    fileType: '',
     status: undefined,
-    uploadedBy: '',
-    dateRange: undefined
+    uploadedBy: ''
   });
 
   // Real-time stats calculation
@@ -76,16 +76,16 @@ const DocumentsPage: React.FC = () => {
       const searchTerm = filters.search?.toLowerCase() || '';
       
       const matchesSearch = !searchTerm || 
-        document.title.toLowerCase().includes(searchTerm) ||
+        document.name.toLowerCase().includes(searchTerm) ||
         document.category.name.toLowerCase().includes(searchTerm) ||
-        document.type.toLowerCase().includes(searchTerm) ||
-        document.uploadedBy.toLowerCase().includes(searchTerm) ||
+        document.fileType.toLowerCase().includes(searchTerm) ||
+        document.uploadedBy.name.toLowerCase().includes(searchTerm) ||
         document.tags?.some(tag => tag.toLowerCase().includes(searchTerm));
       
       const matchesCategory = !filters.category || document.category.id === filters.category;
-      const matchesType = !filters.type || document.type === filters.type;
+      const matchesType = !filters.fileType || document.fileType.toLowerCase().includes(filters.fileType.toLowerCase());
       const matchesStatus = !filters.status || document.status === filters.status;
-      const matchesUploadedBy = !filters.uploadedBy || document.uploadedBy.toLowerCase().includes(filters.uploadedBy.toLowerCase());
+      const matchesUploadedBy = !filters.uploadedBy || document.uploadedBy.name.toLowerCase().includes(filters.uploadedBy.toLowerCase());
       
       return matchesSearch && matchesCategory && matchesType && matchesStatus && matchesUploadedBy;
     });
@@ -94,9 +94,9 @@ const DocumentsPage: React.FC = () => {
   // DataTable columns configuration
   const columns = [
     {
-      key: 'title',
+      key: 'name',
       title: 'Document',
-      dataIndex: 'title',
+      dataIndex: 'name',
       sortable: true,
       render: (value: any, record: Document) => (
         <div className="flex items-center space-x-3">
@@ -110,9 +110,9 @@ const DocumentsPage: React.FC = () => {
               to={`/documents/${record.id}`}
               className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline cursor-pointer"
             >
-              {record.title}
+              {record.name}
             </Link>
-            <div className="text-sm text-gray-500">{record.type}</div>
+            <div className="text-sm text-gray-500">{record.fileType}</div>
           </div>
         </div>
       ),
@@ -189,7 +189,7 @@ const DocumentsPage: React.FC = () => {
           setTimeout(() => {
             const link = document.createElement('a');
             link.href = doc.fileUrl || '#';
-            link.download = doc.title;
+            link.download = doc.name;
             link.click();
           }, index * 500); // Stagger downloads to avoid browser blocking
         });
@@ -239,7 +239,7 @@ const DocumentsPage: React.FC = () => {
         // Simulate file download
         const link = document.createElement('a');
         link.href = record.fileUrl || '#';
-        link.download = record.title;
+        link.download = record.name;
         link.click();
       },
       variant: 'default' as const,
@@ -249,7 +249,7 @@ const DocumentsPage: React.FC = () => {
       label: 'Delete Document',
       icon: Trash2,
       onClick: (record: Document) => {
-        if (window.confirm(`Are you sure you want to delete "${record.title}"?`)) {
+        if (window.confirm(`Are you sure you want to delete "${record.name}"?`)) {
           console.log('Deleting document:', record.id);
           // Handle delete - in a real app, this would call an API
         }
@@ -258,7 +258,7 @@ const DocumentsPage: React.FC = () => {
     },
   ];
 
-  const handleFilterChange = (key: keyof DocumentFilters, value: string) => {
+  const handleFilterChange = (key: keyof DocumentFilter, value: string) => {
     setFilters(prev => ({
       ...prev,
       [key]: value || undefined
@@ -269,10 +269,9 @@ const DocumentsPage: React.FC = () => {
     setFilters({
       search: '',
       category: '',
-      type: '',
+      fileType: '',
       status: undefined,
-      uploadedBy: '',
-      dateRange: undefined
+      uploadedBy: ''
     });
   };
 
@@ -304,7 +303,7 @@ const DocumentsPage: React.FC = () => {
     }, [showActions]);
 
     const handleDeleteDocument = () => {
-      if (window.confirm(`Are you sure you want to delete ${document.title}?`)) {
+      if (window.confirm(`Are you sure you want to delete ${document.name}?`)) {
         console.log(`Deleting document ${document.id}`);
       }
       setShowActions(false);
@@ -330,9 +329,9 @@ const DocumentsPage: React.FC = () => {
                   to={`/documents/${document.id}`}
                   className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors cursor-pointer"
                 >
-                  {document.title}
+                  {document.name}
                 </Link>
-                <p className="text-sm text-gray-600 mb-1">{document.type}</p>
+                <p className="text-sm text-gray-600 mb-1">{document.fileType}</p>
                 <div className="flex items-center space-x-2">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(document.status)}`}>
                     <div className={`w-2 h-2 rounded-full mr-2 ${
@@ -377,13 +376,13 @@ const DocumentsPage: React.FC = () => {
                   </Link>
                   <button 
                     onClick={() => {
-                      // Simulate file download
-                      const link = document.createElement('a');
-                      link.href = document.fileUrl || '#';
-                      link.download = document.title;
-                      link.click();
-                      setShowActions(false);
-                    }}
+                // Simulate file download
+                const link = document.createElement('a');
+                link.href = document.fileUrl || '#';
+                link.download = document.name;
+                link.click();
+                setShowActions(false);
+              }}
                     className="flex items-center w-full px-3 py-2 text-sm text-gray-700 hover:bg-gray-50"
                   >
                     <Download className="w-4 h-4 mr-2" />
@@ -432,9 +431,9 @@ const DocumentsPage: React.FC = () => {
                 // Simulate file download
                 const link = document.createElement('a');
                 link.href = document.fileUrl || '#';
-                link.download = document.title;
+                link.download = document.name;
                 link.click();
-                console.log('Downloading document:', document.title);
+                console.log('Downloading document:', document.name);
               }}
               className="w-full inline-flex items-center justify-center px-3 py-2 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 text-white text-xs font-medium rounded-lg transition-all duration-200 shadow-sm hover:shadow-md"
             >
@@ -490,7 +489,7 @@ const DocumentsPage: React.FC = () => {
                   Export Data
                 </button>
                 <Link
-                  to="/documents/new"
+                  to="/documents/upload"
                   className="group relative inline-flex items-center px-6 py-3 bg-white text-blue-600 text-sm font-semibold rounded-xl hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white/50 shadow-lg hover:shadow-xl transition-all duration-200"
                 >
                   <Plus className="h-5 w-5 mr-2" />
@@ -582,38 +581,13 @@ const DocumentsPage: React.FC = () => {
               </div>
               <h3 className="text-xl font-bold text-gray-900">Search & Filter Documents</h3>
             </div>
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={() => setShowFilters(!showFilters)}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-sm rounded-xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 shadow-lg"
-              >
-                <Filter className="w-4 h-4" />
-                {showFilters ? 'Hide Filters' : 'Show Filters'}
-              </button>
-              <div className="flex items-center bg-gray-100 rounded-xl p-1 border border-gray-300">
-                <button
-                  onClick={() => setViewMode('grid')}
-                  className={`p-2 rounded-lg transition-colors border text-sm ${
-                    viewMode === 'grid' 
-                      ? 'bg-white text-blue-600 shadow-md border-gray-300' 
-                      : 'text-gray-600 hover:text-gray-900 border-transparent hover:border-gray-200'
-                  }`}
-                  >
-                    <Grid3X3 className="w-5 h-5" />
-                  </button>
-                  <button
-                    onClick={() => setViewMode('list')}
-                    className={`p-2 rounded-lg transition-colors border text-sm ${
-                      viewMode === 'list' 
-                        ? 'bg-white text-blue-600 shadow-md border-gray-300' 
-                        : 'text-gray-600 hover:text-gray-900 border-transparent hover:border-gray-200'
-                    }`}
-                  >
-                    <List className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-            </div>
+            <button
+              onClick={() => setShowFilters(!showFilters)}
+              className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-700 text-white text-sm rounded-xl hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 shadow-lg"
+            >
+              <Filter className="w-4 h-4" />
+              {showFilters ? 'Hide Filters' : 'Show Filters'}
+            </button>
           </div>
           
           {/* Search Bar */}
@@ -629,6 +603,32 @@ const DocumentsPage: React.FC = () => {
               <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-gray-400" />
             </div>
           </div>
+          
+          {/* View Toggle Buttons - Bottom Right */}
+          <div className="flex justify-end mb-6">
+            <div className="flex items-center bg-gray-100 rounded-xl p-1 border border-gray-300">
+              <button
+                onClick={() => setViewMode('grid')}
+                className={`p-2 rounded-lg transition-colors border text-sm ${
+                  viewMode === 'grid' 
+                    ? 'bg-white text-blue-600 shadow-md border-gray-300' 
+                    : 'text-gray-600 hover:text-gray-900 border-transparent hover:border-gray-200'
+                }`}
+              >
+                <Grid3X3 className="w-5 h-5" />
+              </button>
+              <button
+                  onClick={() => setViewMode('list')}
+                  className={`p-2 rounded-lg transition-colors border text-sm ${
+                    viewMode === 'list' 
+                      ? 'bg-white text-blue-600 shadow-md border-gray-300' 
+                      : 'text-gray-600 hover:text-gray-900 border-transparent hover:border-gray-200'
+                  }`}
+                >
+                  <List className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
           
           {/* Filter Options */}
           {showFilters && (
@@ -653,8 +653,8 @@ const DocumentsPage: React.FC = () => {
                 <div className="space-y-2">
                   <label className="block text-sm font-semibold text-gray-700">Type</label>
                   <select
-                     value={filters.type || ''}
-                     onChange={(e) => handleFilterChange('type', e.target.value)}
+                     value={filters.fileType || ''}
+                     onChange={(e) => handleFilterChange('fileType', e.target.value)}
                      className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200"
                    >
                      <option value="">All Types</option>
@@ -691,24 +691,16 @@ const DocumentsPage: React.FC = () => {
                  </div>
                </div>
                
-               <div className="flex justify-end space-x-4 mt-6">
+               <div className="flex justify-end mt-6">
                  <button
                    onClick={clearFilters}
                    className="px-4 py-2 text-gray-600 bg-gray-100 hover:bg-gray-200 rounded-xl transition-all duration-200 text-sm font-medium"
                  >
                    Clear All
                  </button>
-                 <button
-                   onClick={() => console.log('Applied filters:', filters)}
-                   className="flex items-center gap-2 px-6 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white text-sm rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-lg"
-                 >
-                   <Filter className="w-4 h-4" />
-                   Apply Filters
-                 </button>
                </div>
              </div>
            )}
-          </div>
         </div>
 
         {/* Enhanced Documents List/Grid */}
@@ -746,7 +738,7 @@ const DocumentsPage: React.FC = () => {
                   }
                 </p>
                 <Link
-                  to="/documents/new"
+                  to="/documents/upload"
                   className="inline-flex items-center space-x-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-8 py-3 rounded-xl font-medium transition-all duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
                 >
                   <Plus className="w-5 h-5" />

@@ -584,39 +584,31 @@ const DocumentUploadPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-700 rounded-3xl shadow-2xl mb-8 overflow-hidden relative">
-          <div className="absolute inset-0 bg-black/20"></div>
-          <div className="relative px-8 py-12">
-            <div className="flex items-center justify-between mb-6">
-              <Link
-                to="/documents"
-                className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors duration-200"
-              >
-                <ArrowLeft className="h-5 w-5" />
-                <span className="font-medium">Back to Documents</span>
-              </Link>
+        <div className="mb-8">
+          <Link
+            to="/documents"
+            className="inline-flex items-center text-blue-600 hover:text-blue-800 transition-colors duration-200 mb-4"
+          >
+            <ArrowLeft className="h-5 w-5 mr-2" />
+            Back to Documents
+          </Link>
+          <div className="flex items-center">
+            <div className="p-3 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl mr-4">
+              <Upload className="h-8 w-8 text-white" />
             </div>
-            
-            <div className="flex items-center space-x-4">
-              <div className="p-4 bg-white/10 backdrop-blur-sm rounded-2xl">
-                <Upload className="h-10 w-10 text-white" />
-              </div>
-              <div>
-                <h1 className="text-4xl font-bold text-white mb-2">Upload Document</h1>
-                <p className="text-xl text-blue-100">
-                  Add new documents to your library with our step-by-step process
-                </p>
-              </div>
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">Upload Document</h1>
+              <p className="text-gray-600 mt-1">Add new documents to your library with our step-by-step process</p>
             </div>
           </div>
         </div>
 
-        {/* Stepper */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 mb-8 overflow-hidden">
-          <div className="px-8 py-6 border-b border-gray-200">
+        {/* Step Progress Bar */}
+        <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl border border-white/20 mb-8">
+          <div className="px-8 py-6">
             <div className="flex items-center justify-between">
               {steps.map((step, index) => {
                 const Icon = step.icon;
@@ -626,26 +618,26 @@ const DocumentUploadPage: React.FC = () => {
                 return (
                   <div key={step.id} className="flex items-center">
                     <div className="flex flex-col items-center">
-                      <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-200 ${
+                      <div className={`w-12 h-12 rounded-full flex items-center justify-center border-2 transition-all duration-300 ${
                         isCompleted 
-                          ? 'bg-green-500 border-green-500 text-white'
+                          ? 'bg-green-500 border-green-500 text-white' 
                           : isActive 
-                            ? 'bg-blue-500 border-blue-500 text-white'
-                            : 'bg-gray-100 border-gray-300 text-gray-400'
+                          ? 'bg-blue-600 border-blue-600 text-white' 
+                          : 'bg-gray-100 border-gray-300 text-gray-400'
                       }`}>
                         {isCompleted ? (
                           <CheckCircle className="h-6 w-6" />
                         ) : (
-                          <Icon className="h-6 w-6" />
+                          <Icon className="h-5 w-5" />
                         )}
                       </div>
-                      <div className="mt-2 text-center">
+                      <div className="mt-3 text-center">
                         <p className={`text-sm font-medium ${
                           isActive ? 'text-blue-600' : isCompleted ? 'text-green-600' : 'text-gray-500'
                         }`}>
                           {step.title}
                         </p>
-                        <p className="text-xs text-gray-400 mt-1 max-w-24">
+                        <p className="text-xs text-gray-400 mt-1 max-w-20">
                           {step.description}
                         </p>
                       </div>
@@ -663,39 +655,44 @@ const DocumentUploadPage: React.FC = () => {
         </div>
 
         {/* Step Content */}
-        <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
+        <div className="bg-white/80 backdrop-blur-sm shadow-xl rounded-2xl border border-white/20">
           <div className="p-8">
             {renderStepContent()}
           </div>
           
           {/* Navigation */}
-          <div className="px-8 py-6 bg-gray-50 border-t border-gray-200">
+          <div className="px-8 py-6 bg-gradient-to-r from-gray-50 to-blue-50 border-t border-gray-200 rounded-b-2xl">
             <div className="flex justify-between">
               <button
+                type="button"
                 onClick={handlePrevious}
                 disabled={currentStep === 1}
-                className="px-6 py-3 text-gray-600 bg-white border border-gray-300 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium"
+                className="px-6 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
               >
-                Previous
+                <ArrowLeft className="h-4 w-4" />
+                <span>Previous</span>
               </button>
               
               {currentStep < steps.length ? (
                 <button
+                  type="button"
                   onClick={handleNext}
-                  className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl hover:from-blue-700 hover:to-indigo-700 transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                  className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl transition-all duration-200 flex items-center space-x-2 font-medium"
                 >
-                  Next Step
+                  <span>Next Step</span>
+                  <ArrowLeft className="h-4 w-4 rotate-180" />
                 </button>
               ) : (
                 <button
+                  type="button"
                   onClick={handleSubmit}
                   disabled={isSubmitting}
-                  className="px-8 py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl hover:from-green-700 hover:to-emerald-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center space-x-2"
+                  className="px-8 py-3 bg-green-600 hover:bg-green-700 disabled:bg-green-400 text-white rounded-xl transition-all duration-200 flex items-center space-x-2 font-medium"
                 >
                   {isSubmitting ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      <span>Uploading...</span>
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Submitting...</span>
                     </>
                   ) : (
                     <>
