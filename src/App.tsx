@@ -5,6 +5,10 @@ import { store } from './app/store';
 import { useAppDispatch } from './app/hooks';
 import { setLoading, setCredentials } from './app/slices/sessionSlice';
 import AppLayout from './layouts/AppLayout';
+import ClientPortalPage from './pages/ClientPortalPage';
+import ProjectDetailsPage from './pages/client-portal/ProjectDetailsPage';
+import ClientPortalProjectCreatePage from './pages/client-portal/ProjectCreatePage';
+import ProjectReportPage from './pages/client-portal/ProjectReportPage';
 import DashboardPage from './pages/DashboardPage';
 import ProjectsPage from './pages/ProjectsPage';
 import ProjectCreatePage from './pages/ProjectCreatePage';
@@ -96,6 +100,14 @@ const AppContent: React.FC = () => {
             <Route index element={<Navigate to="/dashboard" replace />} />
             {/* Dashboard */}
             <Route path="dashboard" element={<DashboardPage />} />
+            
+            {/* Client Portal */}
+            <Route path="client-portal" element={<ClientPortalPage />} />
+            <Route path="client-portal/projects" element={<ClientPortalPage />} />
+            <Route path="client-portal/projects/new" element={<ClientPortalProjectCreatePage />} />
+            <Route path="client-portal/project/:projectId" element={<ProjectDetailsPage />} />
+            <Route path="client-portal/project/:projectId/edit" element={<ClientPortalProjectCreatePage />} />
+            <Route path="client-portal/project/:projectId/report" element={<ProjectReportPage />} />
             
             {/* Project routes */}
             <Route path="projects" element={<ProjectsPage />} />

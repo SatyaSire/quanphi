@@ -11,22 +11,47 @@ import {
 import type { CreateProjectRequest, UpdateProjectRequest } from '../types/api';
 
 interface ProjectFormData {
+  // Basic Info
   name: string;
   clientId: string;
   address: string;
+  description: string;
+  tags: string[];
+  
+  // Budget & Timeline
   startDate: string;
   endDate: string;
   budget: number;
-  description: string;
+  budgetType: 'fixed' | 'hourly' | 'milestone';
+  estimatedHours: number;
+  
+  // Client Information
+  clientName: string;
+  clientEmail: string;
+  clientPhone: string;
+  clientCompany: string;
+  
+  // Project Requirements
+  projectType: 'residential' | 'commercial' | 'industrial' | 'renovation';
+  objectives: string;
+  targetAudience: string;
+  technicalRequirements: string;
+  
+  // Additional Details
+  additionalNotes: string;
+  priority: 'low' | 'medium' | 'high';
+  category: 'construction' | 'renovation' | 'design' | 'consulting';
+  
+  // Team & Resources
   assignedStaff: string[];
   linkedQuotationId?: string;
-  tags: string[];
 }
 
 const steps = [
-  { id: 'basic', title: 'Basic Info', description: 'Project details and client' },
-  { id: 'team', title: 'Team', description: 'Assign staff members' },
-  { id: 'budget', title: 'Budget & Schedule', description: 'Timeline and budget' },
+  { id: 'basic', title: 'Basic Info', description: 'Project details and description' },
+  { id: 'client', title: 'Client Info', description: 'Client contact information' },
+  { id: 'requirements', title: 'Requirements', description: 'Project specifications' },
+  { id: 'budget', title: 'Budget & Timeline', description: 'Budget and schedule details' },
   { id: 'review', title: 'Review', description: 'Review and save' },
 ];
 
@@ -37,15 +62,39 @@ const ProjectCreatePage: React.FC = () => {
   
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<ProjectFormData>({
+    // Basic Info
     name: '',
     clientId: '',
     address: '',
+    description: '',
+    tags: [],
+    
+    // Budget & Timeline
     startDate: '',
     endDate: '',
     budget: 0,
-    description: '',
+    budgetType: 'fixed',
+    estimatedHours: 0,
+    
+    // Client Information
+    clientName: '',
+    clientEmail: '',
+    clientPhone: '',
+    clientCompany: '',
+    
+    // Project Requirements
+    projectType: 'residential',
+    objectives: '',
+    targetAudience: '',
+    technicalRequirements: '',
+    
+    // Additional Details
+    additionalNotes: '',
+    priority: 'medium',
+    category: 'construction',
+    
+    // Team & Resources
     assignedStaff: [],
-    tags: [],
   });
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isDraft, setIsDraft] = useState(false);
@@ -88,16 +137,26 @@ const ProjectCreatePage: React.FC = () => {
     switch (step) {
       case 0: // Basic Info
         if (!formData.name.trim()) newErrors.name = 'Project name is required';
-        if (!formData.clientId) newErrors.clientId = 'Client is required';
         if (!formData.address.trim()) newErrors.address = 'Address is required';
+        if (!formData.description.trim()) newErrors.description = 'Description is required';
         break;
-      case 1: // Team
-        // Team assignment is optional
+      case 1: // Client Info
+        if (!formData.clientName.trim()) newErrors.clientName = 'Client name is required';
+        if (!formData.clientEmail.trim()) newErrors.clientEmail = 'Client email is required';
+        if (formData.clientEmail && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.clientEmail)) {
+          newErrors.clientEmail = 'Please enter a valid email address';
+        }
         break;
-      case 2: // Budget & Schedule
+      case 2: // Requirements
+        if (!formData.objectives.trim()) newErrors.objectives = 'Project objectives are required';
+        break;
+      case 3: // Budget & Timeline
         if (!formData.startDate) newErrors.startDate = 'Start date is required';
         if (!formData.endDate) newErrors.endDate = 'End date is required';
         if (formData.budget <= 0) newErrors.budget = 'Budget must be greater than 0';
+        if (formData.budgetType === 'hourly' && formData.estimatedHours <= 0) {
+          newErrors.estimatedHours = 'Estimated hours must be greater than 0 for hourly projects';
+        }
         if (formData.startDate && formData.endDate && formData.startDate >= formData.endDate) {
           newErrors.endDate = 'End date must be after start date';
         }
@@ -119,7 +178,7 @@ const ProjectCreatePage: React.FC = () => {
   };
 
   const handleSubmit = async (saveAsDraft = false) => {
-    if (!validateStep(2)) return; // Validate all required fields
+    if (!validateStep(3)) return; // Validate all required fields
 
     const projectData = {
       ...formData,
@@ -154,21 +213,6 @@ const ProjectCreatePage: React.FC = () => {
               error={errors.name}
               required
             />
-            
-            <SelectField
-              label="Client"
-              value={formData.clientId}
-              onChange={(e) => updateFormData('clientId', e.target.value)}
-              error={errors.clientId}
-              required
-            >
-              <option value="">Select a client</option>
-              {clientsData?.data.map((client) => (
-                <option key={client.id} value={client.id}>
-                  {client.name}
-                </option>
-              ))}
-            </SelectField>
 
             <TextAreaField
               label="Project Address"
@@ -180,12 +224,48 @@ const ProjectCreatePage: React.FC = () => {
             />
 
             <TextAreaField
-              label="Description"
+              label="Project Description"
               value={formData.description}
               onChange={(e) => updateFormData('description', e.target.value)}
+              error={errors.description}
               rows={4}
               placeholder="Describe the project scope and requirements..."
+              required
             />
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SelectField
+                label="Project Type"
+                value={formData.projectType}
+                onChange={(e) => updateFormData('projectType', e.target.value)}
+              >
+                <option value="residential">Residential</option>
+                <option value="commercial">Commercial</option>
+                <option value="industrial">Industrial</option>
+                <option value="renovation">Renovation</option>
+              </SelectField>
+
+              <SelectField
+                label="Category"
+                value={formData.category}
+                onChange={(e) => updateFormData('category', e.target.value)}
+              >
+                <option value="construction">Construction</option>
+                <option value="renovation">Renovation</option>
+                <option value="design">Design</option>
+                <option value="consulting">Consulting</option>
+              </SelectField>
+            </div>
+
+            <SelectField
+              label="Priority Level"
+              value={formData.priority}
+              onChange={(e) => updateFormData('priority', e.target.value)}
+            >
+              <option value="low">Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </SelectField>
 
             <InputField
               label="Tags"
@@ -197,29 +277,124 @@ const ProjectCreatePage: React.FC = () => {
           </div>
         );
 
-      case 1: // Team
+      case 1: // Client Info
         return (
           <div className="space-y-6">
             <div>
-              <h3 className="text-lg font-medium text-gray-900 mb-4">Assign Team Members</h3>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Client Information</h3>
               <p className="text-sm text-gray-600 mb-6">
-                Select staff members to assign to this project. You can modify assignments later.
+                Enter the client contact details for this project.
               </p>
             </div>
 
-            {/* TODO: Implement staff selection component */}
-            <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-              <p className="text-gray-500">Staff assignment component will be implemented here</p>
-              <p className="text-sm text-gray-400 mt-2">
-                For now, team members can be assigned after project creation
-              </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                label="Client Name"
+                value={formData.clientName}
+                onChange={(e) => updateFormData('clientName', e.target.value)}
+                error={errors.clientName}
+                required
+              />
+
+              <InputField
+                label="Client Email"
+                type="email"
+                value={formData.clientEmail}
+                onChange={(e) => updateFormData('clientEmail', e.target.value)}
+                error={errors.clientEmail}
+                required
+              />
             </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <InputField
+                label="Client Phone"
+                type="tel"
+                value={formData.clientPhone}
+                onChange={(e) => updateFormData('clientPhone', e.target.value)}
+                placeholder="+1 (555) 123-4567"
+              />
+
+              <InputField
+                label="Company Name"
+                value={formData.clientCompany}
+                onChange={(e) => updateFormData('clientCompany', e.target.value)}
+                placeholder="Optional"
+              />
+            </div>
+
+            <SelectField
+              label="Existing Client"
+              value={formData.clientId}
+              onChange={(e) => updateFormData('clientId', e.target.value)}
+              helpText="Optional: Link to existing client record"
+            >
+              <option value="">Select existing client (optional)</option>
+              {clientsData?.data.map((client) => (
+                <option key={client.id} value={client.id}>
+                  {client.name}
+                </option>
+              ))}
+            </SelectField>
           </div>
         );
 
-      case 2: // Budget & Schedule
+      case 2: // Requirements
         return (
           <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Project Requirements</h3>
+              <p className="text-sm text-gray-600 mb-6">
+                Define the project objectives and technical requirements.
+              </p>
+            </div>
+
+            <TextAreaField
+              label="Project Objectives"
+              value={formData.objectives}
+              onChange={(e) => updateFormData('objectives', e.target.value)}
+              error={errors.objectives}
+              rows={4}
+              placeholder="What are the main goals and objectives of this project?"
+              required
+            />
+
+            <TextAreaField
+              label="Target Audience"
+              value={formData.targetAudience}
+              onChange={(e) => updateFormData('targetAudience', e.target.value)}
+              rows={3}
+              placeholder="Who is the target audience or end users?"
+            />
+
+            <TextAreaField
+              label="Technical Requirements"
+              value={formData.technicalRequirements}
+              onChange={(e) => updateFormData('technicalRequirements', e.target.value)}
+              rows={4}
+              placeholder="Specify any technical requirements, materials, or specifications..."
+            />
+
+            <TextAreaField
+              label="Additional Notes"
+              value={formData.additionalNotes}
+              onChange={(e) => updateFormData('additionalNotes', e.target.value)}
+              rows={3}
+              placeholder="Any additional information or special requirements..."
+            />
+          </div>
+        );
+
+      case 3: // Budget & Timeline
+        return (
+          <div className="space-y-6">
+            <div>
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Budget & Timeline</h3>
+              <p className="text-sm text-gray-600 mb-6">
+                Set the project timeline and budget details.
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <DateField
                 label="Start Date"
@@ -238,17 +413,42 @@ const ProjectCreatePage: React.FC = () => {
               />
             </div>
 
-            <InputField
-              label="Budget"
-              type="number"
-              value={formData.budget.toString()}
-              onChange={(e) => updateFormData('budget', parseFloat(e.target.value) || 0)}
-              error={errors.budget}
-              min="0"
-              step="0.01"
-              required
-              helpText="Total project budget in USD"
-            />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <SelectField
+                label="Budget Type"
+                value={formData.budgetType}
+                onChange={(e) => updateFormData('budgetType', e.target.value)}
+              >
+                <option value="fixed">Fixed Price</option>
+                <option value="hourly">Hourly Rate</option>
+                <option value="milestone">Milestone Based</option>
+              </SelectField>
+
+              <InputField
+                label="Budget Amount"
+                type="number"
+                value={formData.budget.toString()}
+                onChange={(e) => updateFormData('budget', parseFloat(e.target.value) || 0)}
+                error={errors.budget}
+                min="0"
+                step="0.01"
+                required
+                helpText={formData.budgetType === 'hourly' ? 'Hourly rate in USD' : 'Total budget in USD'}
+              />
+            </div>
+
+            {formData.budgetType === 'hourly' && (
+              <InputField
+                label="Estimated Hours"
+                type="number"
+                value={formData.estimatedHours.toString()}
+                onChange={(e) => updateFormData('estimatedHours', parseFloat(e.target.value) || 0)}
+                error={errors.estimatedHours}
+                min="0"
+                step="0.5"
+                helpText="Estimated total hours for the project"
+              />
+            )}
 
             <InputField
               label="Linked Quotation ID"

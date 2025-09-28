@@ -325,14 +325,17 @@ const DocumentsPage: React.FC = () => {
                 }`}></div>
               </div>
               <div className="flex-1">
-                <Link
-                  to={`/documents/${document.id}`}
-                  className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors cursor-pointer"
-                >
-                  {document.name}
-                </Link>
-                <p className="text-sm text-gray-600 mb-1">{document.fileType}</p>
-                <div className="flex items-center space-x-2">
+                <div className="h-20 flex flex-col justify-between">
+                  <Link
+                    to={`/documents/${document.id}`}
+                    className="text-lg font-semibold text-gray-900 hover:text-blue-600 transition-colors cursor-pointer line-clamp-2 leading-tight"
+                    title={document.name}
+                  >
+                    {document.name}
+                  </Link>
+                  <p className="text-sm text-gray-600">{document.fileType}</p>
+                </div>
+                <div className="flex items-center space-x-2 mt-2">
                   <span className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor(document.status)}`}>
                     <div className={`w-2 h-2 rounded-full mr-2 ${
                       document.status === 'active' ? 'bg-green-400' : 
