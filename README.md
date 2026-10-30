@@ -41,31 +41,31 @@ Below are selected screenshots from the current frontend implementation. They de
 
 A centralized dashboard providing an overview of business operations, including revenue, active projects, workforce, client ratings, pending quotations, payments, inventory, and equipment status.
 
-![Quanphi Main Dashboard](ss/image%2820261030-095939%29.png)
+![Quanphi Main Dashboard](screenshots/image%2820261030-095939%29.png)
 
 ### 2. Compact Dashboard & Navigation
 
 A space-efficient navigation layout designed to provide quick access to different business modules while maximizing the workspace.
 
-![Quanphi Compact Dashboard](ss/image%2820261030-095954%29.png)
+![Quanphi Compact Dashboard](screenshots/image%2820261030-095954%29.png)
 
 ### 3. Material Management
 
 Record material purchases against individual projects with purchase dates, material names, categories, quantities, units, and pricing information.
 
-![Quanphi Material Management](ss/image%2820261030-100102%29.png)
+![Quanphi Material Management](screenshots/image%2820261030-100102%29.png)
 
 ### 4. Custom Material Categories
 
 Manage custom material categories to organize construction purchases and maintain structured material records.
 
-![Quanphi Material Categories](ss/image%2820261030-100119%29.png)
+![Quanphi Material Categories](screenshots/image%2820261030-100119%29.png)
 
 ### 5. Quantity, Pricing & Payment Details
 
 Capture material quantities, unit pricing, automatically calculated purchase totals, payment methods, and invoice references.
 
-![Quanphi Material Payment Details](ss/image%2820261030-100136%29.png)
+![Quanphi Material Payment Details](screenshots/image%2820261030-100136%29.png)
 
 *These are selected frontend previews, not an exhaustive representation of the application. Additional modules and workflows are also being developed.*
 
