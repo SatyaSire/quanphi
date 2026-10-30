@@ -1,28 +1,26 @@
 # Quanphi — Contractor & Project Management Platform
 
-**One platform. Every project. Complete control.**
+**One Platform. Every Project. Complete Control.**
 
-Quanphi is an ambitious, full-stack project management platform currently under active development, designed specifically for contractors, construction businesses, and interior and exterior design professionals who manage multiple projects, clients, vendors, workers, and day-to-day operations.
+Quanphi is a personal software project currently under active development, with the vision of building a comprehensive project and business management platform for contractors, construction businesses, and interior and exterior design professionals.
 
-Managing multiple projects shouldn't mean juggling spreadsheets, disconnected applications, endless phone calls, and scattered documents.
+Managing multiple projects involves coordinating clients, vendors, workers, suppliers, materials, finances, documents, and countless daily activities.
 
-Quanphi aims to bring everything together into one centralized platform — helping contractors manage their entire business, from project planning and workforce coordination to expenses, materials, quotations, invoices, and client communication.
+Quanphi aims to bring all these operations together into one centralized platform, helping contractors manage their entire business more efficiently — from project planning and workforce coordination to financial tracking and client communication.
 
-> 🚧 **Project Status: Under Active Development**
+> 🚧 **Development Status: Work in Progress**
 >
-> The frontend application is currently under development. Backend architecture, APIs, database integration, and the mobile application are planned as upcoming development phases.
+> The frontend application is actively under development. Backend development, database integration, complete API-driven workflows, and a dedicated mobile application are planned as upcoming phases.
 
 ---
 
-## 🎯 The Vision
+## 🎯 The Vision Behind Quanphi
 
-Quanphi is being built around a simple idea:
+The idea behind Quanphi is simple: contractors should not need multiple disconnected tools to manage their business.
 
-**Give contractors everything they need to manage their projects and run their business from a single platform.**
+Whether managing residential interior projects, commercial construction, exterior development, renovation work, or multiple projects across different locations, Quanphi aims to provide a single workspace for everything.
 
-Whether you're handling multiple residential interior projects, commercial construction, exterior development, renovation work, or coordinating several teams across different locations, Quanphi aims to simplify the entire workflow.
-
-The goal is to create a comprehensive ecosystem connecting:
+The platform is envisioned to connect:
 
 - Contractors and business owners
 - Project managers and supervisors
@@ -31,25 +29,65 @@ The goal is to create a comprehensive ecosystem connecting:
 - Workers and field teams
 - Finance and administrative teams
 
-Every stakeholder should have access to the information and tools relevant to their role.
+The ultimate goal is to build a complete ecosystem where every stakeholder can access the information and tools relevant to their responsibilities.
+
+---
+
+## 📸 Application Preview
+
+Below are selected screenshots from the current frontend implementation. They demonstrate the application's interface, design direction, and some of the workflows currently being developed.
+
+### 1. Main Dashboard
+
+A centralized dashboard providing an overview of business operations, including revenue, active projects, workforce, client ratings, pending quotations, payments, inventory, and equipment status.
+
+![Quanphi Main Dashboard](ss/image%2820261030-095939%29.png)
+
+### 2. Compact Dashboard & Navigation
+
+A space-efficient navigation layout designed to provide quick access to different business modules while maximizing the workspace.
+
+![Quanphi Compact Dashboard](ss/image%2820261030-095954%29.png)
+
+### 3. Material Management
+
+Record material purchases against individual projects with purchase dates, material names, categories, quantities, units, and pricing information.
+
+![Quanphi Material Management](ss/image%2820261030-100102%29.png)
+
+### 4. Custom Material Categories
+
+Manage custom material categories to organize construction purchases and maintain structured material records.
+
+![Quanphi Material Categories](ss/image%2820261030-100119%29.png)
+
+### 5. Quantity, Pricing & Payment Details
+
+Capture material quantities, unit pricing, automatically calculated purchase totals, payment methods, and invoice references.
+
+![Quanphi Material Payment Details](ss/image%2820261030-100136%29.png)
+
+*These are selected frontend previews, not an exhaustive representation of the application. Additional modules and workflows are also being developed.*
+
+---
 
 ## ✨ Core Modules & Features
 
-Quanphi is being designed as a modular platform, with different areas of functionality working together.
+Quanphi is being developed as a modular platform covering different aspects of contractor and project operations.
 
 ### 🏗️ Project Management
 - Manage multiple projects from a centralized dashboard.
-- Organize project information, milestones, and timelines.
+- Organize project details, milestones, and timelines.
 - Monitor project progress and completion.
 - Manage project-specific tasks and activities.
 - Maintain project documentation and records.
 
 ### 👥 Client Management
 - Maintain centralized client profiles.
-- Organize client information and project associations.
-- Manage client communication and records.
+- Associate clients with their respective projects.
+- Organize client information and communication records.
 - Provide a dedicated client portal.
-- Give clients visibility into relevant project information.
+- Enable visibility into relevant project information.
 
 ### 👷 Workforce Management
 - Maintain worker profiles and records.
@@ -62,13 +100,14 @@ Quanphi is being designed as a modular platform, with different areas of functio
 - Organize vendor and supplier information.
 - Maintain vendor records and associations.
 - Manage supplier-related project activities.
-- Keep procurement and material workflows organized.
+- Organize procurement-related workflows.
 
 ### 📦 Materials & Inventory
-- Organize construction materials and inventory categories.
-- Maintain material-related records.
-- Track material requirements across projects.
-- Support better visibility into project resources.
+- Manage construction materials and inventory categories.
+- Record project-specific material purchases.
+- Track quantities, units, and pricing.
+- Maintain material purchase records.
+- Improve visibility into project resources.
 
 ### 💰 Financial Management
 - Manage project-related expenses.
@@ -76,14 +115,14 @@ Quanphi is being designed as a modular platform, with different areas of functio
 - Create and manage quotations.
 - Generate and manage invoices.
 - Track payments and advances.
-- Manage payroll-related records.
+- Maintain payroll-related records.
 
 ### 📋 Tasks & Operations
 - Organize tasks and responsibilities.
 - Track operational activities.
 - Manage notifications.
 - Maintain activity and audit logs.
-- Improve visibility across different business operations.
+- Improve visibility across business operations.
 
 ### 📁 Document Management
 - Centralize important project documents.
@@ -93,22 +132,22 @@ Quanphi is being designed as a modular platform, with different areas of functio
 ### 🔐 Access & Permissions
 - Role-based access control architecture.
 - Organize access according to user responsibilities.
-- Separate contractor, client, and operational workflows.
+- Support separate contractor, client, and operational workflows.
 
-*Note: These modules represent the current frontend scope and product direction. Some workflows currently use demonstration data or frontend scaffolding and will require backend integration to become fully operational.*
+*Feature availability varies across modules. Some workflows currently use demonstration data or frontend scaffolding and require backend integration.*
 
 ---
 
 ## 🛠️ Technology Stack
 
-Quanphi's frontend is being developed using a modern React and TypeScript ecosystem.
+The current frontend is built using a modern React and TypeScript ecosystem.
 
 | Technology | Purpose |
 |---|---|
 | React 19 | Frontend application |
 | TypeScript | Type safety |
-| Vite | Development and build tooling |
-| Redux Toolkit | Application state management |
+| Vite 7 | Development and build tooling |
+| Redux Toolkit | State management |
 | React Router | Client-side routing |
 | RTK Query | API data management |
 | Axios | HTTP communication |
@@ -120,45 +159,46 @@ Quanphi's frontend is being developed using a modern React and TypeScript ecosys
 
 ---
 
-## 🏛️ Development Architecture
+## 🏛️ Planned Architecture
 
-Quanphi is being developed with a modular architecture intended to support future expansion.
+Quanphi is being developed with a modular architecture designed to support future expansion.
 
-The planned architecture includes:
+| Layer | Planned Technology | Status |
+|---|---|---|
+| Frontend | React + TypeScript | Under development |
+| Backend | Node.js + Express.js | Planned |
+| Database | MongoDB | Planned |
+| API | RESTful APIs | Planned |
+| Authentication | Secure authentication and authorization | Planned |
+| Real-time communication | Socket.IO | Integration planned |
+| Mobile application | React Native | Future phase |
 
-- **Frontend:** React + TypeScript
-- **Backend:** Planned — Node.js + Express.js
-- **Database:** Planned — MongoDB
-- **API Architecture:** Planned — RESTful APIs
-- **Authentication:** Planned — Secure authentication and authorization
-- **Real-time Communication:** Planned — Socket.IO integration
-- **Mobile Application:** Planned — Cross-platform mobile experience
+The current repository focuses on frontend development, UI workflows, component architecture, and application structure.
 
-The backend has not been implemented yet. The current repository focuses on frontend development, UI workflows, component architecture, and application structure.
+Backend development and database integration will be started in the upcoming development phase.
 
 ---
 
-## 📱 Future Roadmap
-
-Quanphi is envisioned as more than a web application.
-
-The long-term goal is to build a complete contractor management ecosystem.
+## 🚀 Development Roadmap
 
 ### Phase 1 — Frontend Development
 - [x] Initial application structure
-- [x] Core dashboard and navigation
-- [x] Modular frontend development
-- [x] Initial project and business management interfaces
+- [x] Dashboard and navigation
+- [x] Modular frontend architecture
+- [x] Initial project management interfaces
+- [x] Client management interfaces
+- [x] Workforce management interfaces
+- [x] Material management interfaces
 - [ ] Complete and refine frontend workflows
-- [ ] Improve form validation and application-wide error handling
+- [ ] Improve application-wide validation and error handling
 
 ### Phase 2 — Backend Development
 - [ ] Design backend architecture
 - [ ] Develop RESTful APIs
-- [ ] Implement database schemas and relationships
+- [ ] Design database schemas and relationships
 - [ ] Implement authentication and authorization
 - [ ] Integrate frontend modules with backend APIs
-- [ ] Implement file and document management
+- [ ] Implement document and file management
 - [ ] Implement real-time notifications
 
 ### Phase 3 — Testing & Optimization
@@ -170,18 +210,20 @@ The long-term goal is to build a complete contractor management ecosystem.
 - [ ] Production deployment
 
 ### Phase 4 — Mobile Application
-- [ ] Develop cross-platform mobile application
-- [ ] Contractor and project manager mobile workflows
+- [ ] Develop a cross-platform mobile application
+- [ ] Contractor and project manager workflows
 - [ ] Worker attendance and field operations
 - [ ] Client access and project updates
 - [ ] Mobile notifications
 - [ ] Synchronization with the web platform
 
+*The roadmap is an evolving plan. Features and priorities may change as development progresses.*
+
 ---
 
 ## 💻 Getting Started
 
-The current repository contains the frontend application.
+Currently, this repository contains the frontend application.
 
 ### Prerequisites
 
@@ -215,7 +257,7 @@ npm install
 npm run dev
 ```
 
-**5. Build for production**
+**5. Build the application**
 
 ```bash
 npm run build
@@ -229,30 +271,28 @@ npm run lint
 
 ---
 
-## 🧭 Product Philosophy
+## 💡 Product Philosophy
 
-Quanphi is being built with a focus on:
+Quanphi is being built around six core principles:
 
 - **Centralization:** Bring essential business operations into one platform.
 - **Scalability:** Build a modular foundation that can grow with business requirements.
 - **Usability:** Make complex project workflows easier to manage.
 - **Transparency:** Improve visibility across projects, finances, resources, and teams.
 - **Collaboration:** Connect contractors, clients, vendors, and workers.
-- **Practicality:** Focus on real-world problems faced by contractors and construction businesses.
+- **Practicality:** Solve real-world operational challenges faced by contractors and construction businesses.
 
 ---
 
-## 🚀 Current Development Status
+## 📌 Current Project Status
 
-Quanphi is a personal product initiative and an ongoing development project.
+Quanphi is an independently developed personal product initiative and an ongoing software development project.
 
 The current focus is on establishing the frontend foundation and building the core modules required for a comprehensive contractor management platform.
 
-Backend development, database integration, complete business workflows, and the mobile application are planned for future phases.
+The backend, database integration, complete business workflows, and mobile application are planned for future development.
 
-The project will continue evolving as new requirements, workflows, and improvements are identified.
-
-**This is a work in progress, and the vision is to build a complete platform that contractors can genuinely rely on to manage their businesses.**
+The intention is to evolve Quanphi into a complete, reliable platform that contractors can genuinely use to manage their projects, people, resources, and business operations.
 
 ---
 
@@ -264,4 +304,5 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 
 **Built with a vision to simplify how contractors manage projects, people, and business operations.**
 
-*Quanphi — Manage Projects. Connect People. Build Better.*
+### Quanphi
+*Manage Projects. Connect People. Build Better.*
